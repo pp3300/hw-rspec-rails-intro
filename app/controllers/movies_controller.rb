@@ -45,7 +45,42 @@ class MoviesController < ApplicationController
     redirect_to movies_path
   end
 
+  def search_tmdb
+    if params[:search_terms].present?
+      @movies = Movie.find_in_tmdb(params[:search_terms])
+    elsif params.key?(:title) || params.key?(:commit)
+      if params[:title].blank?
+        flash.now[:danger] = 'Please fill in all required fields!'
+      else
+        search_params = {
+          title: params[:title],
+          release_year: params[:release_year],
+          language: params[:language]
+        }
+        @movies = Movie.find_in_tmdb(search_params)
+        if @movies.blank?
+          flash.now[:warning] = 'No movies found with given parameters!'
+        end
+      end
+    end
+  end
+
+  def add_movie
+    movie_attributes = if params[:movie].present?
+                         params.require(:movie).permit(:title, :rating, :release_date, :description)
+                       else
+                         params.permit(:title, :rating, :release_date, :description)
+                       end
+    @movie = Movie.create!(movie_attributes)
+    flash[:success] = "#{@movie.title} was successfully added to RottenPotatoes."
+    redirect_to search_tmdb_path
+  end
+
   private
+
+  def movie_params
+    params.require(:movie).permit(:title, :rating, :description, :release_date)
+  end
 
   def force_index_redirect
     return unless !params.key?(:ratings) || !params.key?(:sort_by)
