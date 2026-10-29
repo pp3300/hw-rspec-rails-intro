@@ -62,6 +62,7 @@ Rottenpotatoes::Application.configure do
 
   # Serve static files and log to STDOUT on Heroku
   config.public_file_server.enabled = true
+  config.active_storage.service = :local
   logger           = ActiveSupport::Logger.new(STDOUT)
   logger.formatter = ::Logger::Formatter.new
   config.logger    = ActiveSupport::TaggedLogging.new(logger)
