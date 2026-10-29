@@ -458,6 +458,7 @@ DEPENDENCIES
   tzinfo-data
   web-console
   webmock
+  webrick
 
 CHECKSUMS
   actioncable (7.1.6) sha256=ad428d5f0a810452160820ae3cf3d9d68d8f59e7c76de3bd1f1de2a5ad03c3da
