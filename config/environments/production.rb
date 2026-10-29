@@ -59,4 +59,10 @@ Rottenpotatoes::Application.configure do
 
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
+
+  # Serve static files and log to STDOUT on Heroku
+  config.public_file_server.enabled = true
+  logger           = ActiveSupport::Logger.new(STDOUT)
+  logger.formatter = ::Logger::Formatter.new
+  config.logger    = ActiveSupport::TaggedLogging.new(logger)
 end
